@@ -1,0 +1,1 @@
+# artplus-fontai-mailer-bundle
