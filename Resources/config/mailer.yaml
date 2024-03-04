@@ -1,0 +1,20 @@
+services:
+    _defaults:
+        public: false
+
+    mailer.spool.propel:
+        class: Fontai\Bundle\MailerBundle\Spool\PropelSpool
+        arguments:
+            - '%mailer.spool.propel.entity%'
+            - '%mailer.spool.propel.query%'
+            - '%kernel.environment%'
+            - '@request_stack'
+
+    swiftmailer.spool.propel.abstract:
+        alias: mailer.spool.propel
+    
+    Fontai\Bundle\MailerBundle\EventSubscriber\SpoolSendSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+        arguments:
+            - '@service_container'

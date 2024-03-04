@@ -1,1 +1,2 @@
-# artplus-fontai-mailer-bundle
+MailerBundle
+============

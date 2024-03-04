@@ -1,0 +1,6 @@
+fontai_generator_email_template_attachment_download:
+    path:       /email_template_attachment/{id}/download
+    controller: App\Controller\FontaiGenerator\EmailTemplateAttachmentController::download
+    methods:    [GET]
+    requirements:
+        id: '[0-9]+'

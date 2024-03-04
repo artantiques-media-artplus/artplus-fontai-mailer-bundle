@@ -1,0 +1,25 @@
+{
+    "name": "fontai/mailer-bundle",
+    "type": "symfony-bundle",
+    "description": "Fontai MailerBundle",
+    "authors": [
+        {
+            "name": "Lumír Toman",
+            "email": "toman@websource.cz"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "fontai/propel2-diff-behavior": "*",
+        "fontai/propel2-eventdispatcher-behavior": "*",
+        "propel/propel-bundle": "~4.0@dev",
+        "symfony/swiftmailer-bundle": "^3.1"
+    },
+    "autoload": {
+        "psr-4": { "Fontai\\Bundle\\MailerBundle\\": "" },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    },
+    "minimum-stability": "dev"
+}

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="default" defaultIdMethod="native" identifierQuoting="true" namespace="App\Model" package="src.Model">
+  <vendor type="mysql">
+    <parameter name="Engine" value="InnoDB" />
+  </vendor>
+  <behavior name="diff" />
+  <behavior name="event_dispatcher" />
+  <table name="email" baseClass="\Fontai\Bundle\MailerBundle\Model\BaseEmail">
+    <column name="id" type="integer" primaryKey="true" autoIncrement="true" required="true" />
+    <column name="environment" type="varchar" size="4" required="true" />
+    <column name="sender_name" type="varchar" size="255" />
+    <column name="sender_email" type="varchar" size="255" required="true" />
+    <column name="to" type="array" />
+    <column name="cc" type="array" />
+    <column name="bcc" type="array" />
+    <column name="subject" type="longvarchar" required="true" />
+    <column name="body" type="clob" required="true" />
+    <column name="message" type="object" sqlType="LONGBLOB" required="true" />
+    <column name="attachments" type="object" />
+    <column name="priority" type="integer" required="true" defaultValue="0" />
+    <column name="sending_at" type="timestamp" />
+    <behavior name="timestampable">
+      <parameter name="disable_updated_at" value="true" />
+    </behavior>
+  </table>
+  <table name="email_log" baseClass="\Fontai\Bundle\MailerBundle\Model\BaseEmailLog">
+    <column name="id" type="integer" primaryKey="true" autoIncrement="true" required="true" />
+    <column name="sender_name" type="varchar" size="255" />
+    <column name="sender_email" type="varchar" size="255" required="true" />
+    <column name="to" type="array" />
+    <column name="cc" type="array" />
+    <column name="bcc" type="array" />
+    <column name="subject" type="longvarchar" required="true" />
+    <column name="attachments" type="object" />
+    <behavior name="timestampable">
+      <parameter name="disable_updated_at" value="true" />
+    </behavior>
+  </table>
+  <table name="email_template" baseClass="\Fontai\Bundle\MailerBundle\Model\BaseEmailTemplate">
+    <column name="id" type="integer" primaryKey="true" autoIncrement="true" required="true" />
+    <column name="tid" type="varchar" size="100" required="true" primaryString="true" />
+    <column name="email_template_group_id" type="integer" required="true" />
+    <column name="from" type="varchar" size="255" />
+    <column name="dynamic_to" type="boolean" size="1" required="true" defaultValue="false" />
+    <column name="to" type="varchar" size="255" />
+    <column name="cc" type="varchar" size="255" />
+    <column name="bcc" type="varchar" size="255" />
+    <column name="body" type="longvarchar" required="true" />
+    <column name="subject" type="varchar" size="255" required="true" />
+    <column name="from_name" type="varchar" size="255" />
+    <column name="priority" type="integer" required="true" defaultValue="0" />
+    <foreign-key foreignTable="email_template_group" name="email_template_FK_1" onDelete="restrict" onUpdate="cascade">
+      <reference local="email_template_group_id" foreign="id" />
+    </foreign-key>
+    <unique name="unique_tid">
+      <unique-column name="tid" />
+    </unique>
+    <behavior name="i18n">
+      <parameter name="i18n_columns" value="body,subject,from_name" />
+      <parameter name="locale_column" value="culture" />
+      <parameter name="default_locale" value="cs" />
+    </behavior>
+  </table>
+  <table name="email_template_group" baseQueryClass="\Fontai\Bundle\MailerBundle\Model\BaseEmailTemplateGroupQuery">
+    <column name="id" type="integer" primaryKey="true" autoIncrement="true" required="true" />
+    <column name="name" type="varchar" size="100" required="true" primaryString="true" />
+    <column name="priority" type="integer" defaultValue="0" />
+    <unique name="unique_name">
+      <unique-column name="name" />
+    </unique>
+  </table>
+  <table name="email_template_variable">
+    <column name="id" type="integer" primaryKey="true" autoIncrement="true" required="true" />
+    <column name="email_template_id" type="integer" required="true" />
+    <column name="variable" type="varchar" size="100" required="true" />
+    <column name="description" type="varchar" size="255" required="true" />
+    <foreign-key foreignTable="email_template" name="email_template_variable_FK_1" onDelete="cascade" onUpdate="cascade">
+      <reference local="email_template_id" foreign="id" />
+    </foreign-key>
+    <unique name="unique_variable">
+      <unique-column name="email_template_id" />
+      <unique-column name="variable" />
+    </unique>
+  </table>
+  <table name="email_template_attachment">
+    <column name="id" type="integer" primaryKey="true" autoIncrement="true" required="true" />
+    <column name="email_template_id" type="integer" required="true" />
+    <column name="filename" type="varchar" size="255" required="true" primaryString="true" />
+    <column name="mime" type="varchar" size="50" />
+    <column name="file" type="varchar" size="255" />
+    <behavior name="timestampable" />
+    <behavior name="i18n">
+      <parameter name="i18n_columns" value="filename,mime,file" />
+      <parameter name="locale_column" value="culture" />
+      <parameter name="default_locale" value="cs" />
+    </behavior>
+    <behavior name="file_upload">
+      <parameter name="column" value="file" />
+      <parameter name="upload_dir" value="resources/email_template_attachment" />
+    </behavior>
+    <foreign-key foreignTable="email_template" name="email_template_attachment_FK_1" onDelete="cascade" onUpdate="cascade">
+      <reference local="email_template_id" foreign="id" />
+    </foreign-key>
+  </table>
+</database>
