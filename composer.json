@@ -12,7 +12,7 @@
         "php": ">=7.1.0",
         "fontai/propel2-diff-behavior": "*",
         "fontai/propel2-eventdispatcher-behavior": "*",
-        "propel/propel-bundle": "~4.0@dev",
+        "propel/propel-bundle": "dev-main",
         "symfony/swiftmailer-bundle": "^3.1"
     },
     "autoload": {
